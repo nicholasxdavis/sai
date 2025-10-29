@@ -917,7 +917,7 @@
     }
 
     // Generate the complete HTML for a blog post
-    function generateBlogHTML(title, featuredImageUrl, contentBlocks, author = "Cultiv8 Culture", date = null) {
+    function generateBlogHTML(title, featuredImageUrl, contentBlocks, author = "Sunsets & Indicas", date = null) {
         if (!date) {
             date = new Date();
         }
@@ -1045,7 +1045,7 @@
                 // Social share links
                 document.getElementById('share-twitter').addEventListener('click', function(e) {
                     e.preventDefault();
-                    window.open(\`https://twitter.com/intent/tweet?url=\${encodeURIComponent(currentUrl)}&text=Check%20out%20this%20article%20from%20Cultiv8%20Culture\`, '_blank');
+                    window.open(\`https://twitter.com/intent/tweet?url=\${encodeURIComponent(currentUrl)}&text=Check%20out%20this%20article%20from%20Sunsets%20%26%20Indicas\`, '_blank');
                 });
 
                 document.getElementById('share-facebook').addEventListener('click', function(e) {
@@ -1078,7 +1078,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title} | Cultiv8 Culture</title>
+    <title>${title} | Sunsets & Indicas</title>
     <` + `script src="https://cdn.tailwindcss.com"></` + `script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
@@ -1088,10 +1088,10 @@
                 extend: {
                     colors: {
                         primary: '#0a0a0a',
-                        secondary: '#f5f5f5',
-                        accent: '#3a7d44',
-                        lightaccent: '#6baa75',
-                        darkaccent: '#2a5e32',
+                        secondary: '#3a7d44',
+                        accent: '#a56ab8',
+                        lightaccent: '#c48dd1',
+                        darkaccent: '#8b4fa6',
                         paper: '#f0eee6',
                     },
                     fontFamily: {
@@ -1134,7 +1134,7 @@
             font-size: 1.75rem;
             margin-top: 3rem;
             margin-bottom: 1.5rem;
-            color: #2a5e32;
+            color: #8b4fa6;
         }
         
         .article-content h3 {
@@ -1156,7 +1156,7 @@
         }
         
         .article-content blockquote {
-            border-left: 4px solid #3a7d44;
+            border-left: 4px solid #a56ab8;
             padding-left: 1.5rem;
             margin: 2rem 0;
             font-style: italic;
@@ -1169,7 +1169,7 @@
     <header class="fixed w-full z-40 bg-paper/90 backdrop-blur-md border-b border-primary/10">
         <div class="container mx-auto px-5 py-4 flex justify-between items-center">
             <a href="#">
-                <img src="../img/logo.png" alt="Cultiv8 Culture Logo" class="h-28">
+                <img src="../main/img/new-logo.png" alt="Sunsets & Indicas Logo" class="h-28">
             </a>
             <nav class="hidden md:flex items-center space-x-8">
                 <a href="../index.html" class="font-medium hover:text-accent transition flex items-center group">
@@ -1282,7 +1282,7 @@
                         </a>
                     </div>
                     <div class="flex">
-                        <input type="text" id="share-url" value="https://cultiv8culture.com/blog/${title.toLowerCase().replace(/\s+/g, '_')}" 
+                        <input type="text" id="share-url" value="https://sunsetsandindicas.com/blogs/${title.toLowerCase().replace(/\s+/g, '_')}" 
                                class="flex-1 text-xs p-2 border border-primary/20 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-accent" readonly>
                         <button id="copy-url" class="bg-primary text-paper px-3 py-2 text-xs rounded-r-lg hover:bg-primary/90 transition">
                             Copy
@@ -1351,7 +1351,7 @@
                 <div>
                     <h3 class="font-display font-bold text-lg text-paper mb-4">About</h3>
                     <p class="mb-4">
-                        Cultiv8 Culture is a magazine celebrating cannabis culture, cultivation, and community.
+                        Sunsets & Indicas is a magazine celebrating cannabis culture, cultivation, and community.
                     </p>
                 </div>
                 
@@ -1394,7 +1394,7 @@
             </div>
             
             <div class="border-t border-paper/10 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p>© 2025 Cultiv8 Culture. All rights reserved.</p>
+                <p>© 2025 Sunsets & Indicas. All rights reserved.</p>
                 <div class="mt-4 md:mt-0">
                     <p class="text-sm">
                         <span class="text-paper/50">Made by</span> 
@@ -1617,12 +1617,17 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
             
             const index = parseInt(document.getElementById('edit-blog-index').value);
             const cards = JSON.parse(localStorage.getItem('currentBlogCards') || '[]');
+            const redirectValue = document.getElementById('edit-redirect').value;
+            // Remove main/ prefix if present
+            const redirect = redirectValue.startsWith('main/') ? redirectValue.substring(5) : redirectValue;
+            
             const newCard = {
                 image: document.getElementById('edit-image-url').value,
                 title: document.getElementById('edit-title').value,
                 description: document.getElementById('edit-description').value,
                 buttonText: document.getElementById('edit-button-text').value,
-                redirect: document.getElementById('edit-redirect').value
+                redirect: redirect,
+                photoCredit: cards[index]?.photoCredit || ''
             };
             
             if (index === -1) {
@@ -1719,13 +1724,18 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                 
                 // 4. Add to the blog cards list
                 const cards = JSON.parse(localStorage.getItem('currentBlogCards') || '[]');
+                
+                // Find first image block with photo credit
+                const firstImageWithCredit = contentBlocks.find(block => block.type === 'image' && block.photoCredit);
+                
                 const newCard = {
                     image: featuredImageUrl,
                     title: title,
                     description: description,
                     buttonText: buttonText,
-                    redirect: `${CONFIG.BLOGS_DIR}/${fileName}`,
-                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                    redirect: `blogs/${fileName}`,
+                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    photoCredit: firstImageWithCredit ? firstImageWithCredit.photoCredit : ''
                 };
                 
                 cards.push(newCard);
