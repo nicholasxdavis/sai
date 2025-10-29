@@ -1709,12 +1709,22 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                 
                 // 2. Upload any additional images in content blocks
                 for (const block of contentBlocks) {
-                    if (block.type === 'image' && block.imageUrl.startsWith('blob:')) {
-                        // This is a newly uploaded image (not from URL)
-                        const file = block.file;
-                        showToast(`Uploading content image: ${file.name}`);
-                        const uploadedUrl = await uploadImageToGitHub(file);
-                        block.imageUrl = uploadedUrl;
+                    if (block.type === 'image' && (block.imageUrl.startsWith('blob:') || block.imageUrl.startsWith('data:'))) {
+                        // This is a newly uploaded image (blob URL or data URI)
+                        if (block.file) {
+                            const file = block.file;
+                            showToast(`Uploading content image: ${file.name}`);
+                            const uploadedUrl = await uploadImageToGitHub(file);
+                            block.imageUrl = uploadedUrl;
+                        } else if (block.imageUrl.startsWith('data:')) {
+                            // Convert data URI to blob and upload
+                            const response = await fetch(block.imageUrl);
+                            const blob = await response.blob();
+                            const file = new File([blob], `content-image-${Date.now()}.${block.imageUrl.match(/data:image\/(\w+);/)?.[1] || 'png'}`, { type: blob.type });
+                            showToast('Uploading content image...');
+                            const uploadedUrl = await uploadImageToGitHub(file);
+                            block.imageUrl = uploadedUrl;
+                        }
                     }
                 }
                 
