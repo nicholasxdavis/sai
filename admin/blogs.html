@@ -395,6 +395,30 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
+        
+        <!-- Import/Export Buttons -->
+        <div class="flex space-x-2 mb-4">
+            <button type="button" id="download-template-btn" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i> Download Template
+            </button>
+            <button type="button" id="import-json-btn" class="px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md transition-colors flex items-center">
+                <i class="fas fa-file-import mr-2"></i> Import JSON
+            </button>
+        </div>
+        
+        <!-- Import JSON Input (Hidden by default) -->
+        <div id="import-json-container" class="hidden mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Paste JSON Data:</label>
+            <textarea id="import-json-input" rows="10" placeholder='Paste your blog JSON here...' class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary font-mono text-xs"></textarea>
+            <div class="flex space-x-2 mt-2">
+                <button type="button" id="import-json-submit-btn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md transition-colors">
+                    <i class="fas fa-check mr-2"></i> Import
+                </button>
+                <button type="button" id="cancel-import-btn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-md transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
         <form id="create-blog-form" class="space-y-4">
             <!-- Image Upload Section -->
             <div>
@@ -1703,9 +1727,21 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
             createBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creating...';
             
             try {
-                // 1. Upload the featured image
-                showToast('Uploading featured image...');
-                const featuredImageUrl = await uploadImageToGitHub(fileInput.files[0]);
+                // 1. Upload the featured image (or use imported URL)
+                let featuredImageUrl;
+                if (fileInput.files && fileInput.files.length > 0) {
+                    // New file uploaded
+                    showToast('Uploading featured image...');
+                    featuredImageUrl = await uploadImageToGitHub(fileInput.files[0]);
+                } else if (uploadPreview.dataset.imageUrl) {
+                    // Using imported URL from JSON
+                    featuredImageUrl = uploadPreview.dataset.imageUrl;
+                } else {
+                    showToast('Please upload or import a featured image', 'error');
+                    createBtn.disabled = false;
+                    createBtn.textContent = 'Create Blog';
+                    return;
+                }
                 
                 // 2. Upload any additional images in content blocks
                 for (const block of contentBlocks) {
@@ -1866,6 +1902,214 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                 fileInput.dispatchEvent(event);
             }
         }
+        
+        // Import/Export functionality
+        const importJsonBtn = document.getElementById('import-json-btn');
+        const importJsonContainer = document.getElementById('import-json-container');
+        const importJsonInput = document.getElementById('import-json-input');
+        const importJsonSubmitBtn = document.getElementById('import-json-submit-btn');
+        const cancelImportBtn = document.getElementById('cancel-import-btn');
+        const downloadTemplateBtn = document.getElementById('download-template-btn');
+        
+        // Toggle import JSON input
+        importJsonBtn.addEventListener('click', () => {
+            importJsonContainer.classList.toggle('hidden');
+            if (!importJsonContainer.classList.contains('hidden')) {
+                importJsonInput.focus();
+            }
+        });
+        
+        cancelImportBtn.addEventListener('click', () => {
+            importJsonContainer.classList.add('hidden');
+            importJsonInput.value = '';
+        });
+        
+        // Download template
+        downloadTemplateBtn.addEventListener('click', () => {
+            const template = {
+                "image": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/example-image.png",
+                "title": "Your Blog Title",
+                "description": "Your blog description here",
+                "buttonText": "Read More",
+                "redirect": "../blogs/your_blog_title.html",
+                "date": new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                "photoCredit": "Photo credit if needed",
+                "contentBlocks": [
+                    {
+                        "type": "text",
+                        "content": "Your text content here"
+                    },
+                    {
+                        "type": "image",
+                        "imageUrl": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/example-image.png",
+                        "altText": "example.png",
+                        "photoCredit": "Photo credit if needed",
+                        "file": {}
+                    },
+                    {
+                        "type": "text",
+                        "content": "Additional text block if needed"
+                    }
+                ]
+            };
+            
+            const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'blog-template.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        
+        // Import JSON
+        importJsonSubmitBtn.addEventListener('click', async () => {
+            try {
+                const jsonText = importJsonInput.value.trim();
+                if (!jsonText) {
+                    alert('Please paste JSON data');
+                    return;
+                }
+                
+                const blogData = JSON.parse(jsonText);
+                
+                // Validate required fields
+                if (!blogData.title || !blogData.description || !blogData.image) {
+                    alert('JSON must contain title, description, and image fields');
+                    return;
+                }
+                
+                // Populate form fields
+                document.getElementById('blog-title').value = blogData.title;
+                document.getElementById('blog-description').value = blogData.description;
+                document.getElementById('blog-button-text').value = blogData.buttonText || 'Read More';
+                
+                // Set featured image
+                const featuredImageInput = document.getElementById('image-upload');
+                const featuredImagePreview = document.getElementById('uploaded-image-preview');
+                const uploadPreview = document.getElementById('upload-preview');
+                const uploadFilename = document.getElementById('upload-filename');
+                
+                // Show featured image preview from URL
+                featuredImagePreview.src = blogData.image;
+                uploadFilename.textContent = 'Imported Image';
+                uploadPreview.classList.remove('hidden');
+                
+                // Store the URL so it can be used during creation
+                uploadPreview.dataset.imageUrl = blogData.image;
+                
+                // Load content blocks
+                const contentBlocksContainer = document.getElementById('content-blocks-container');
+                contentBlocksContainer.innerHTML = '';
+                
+                if (blogData.contentBlocks && Array.isArray(blogData.contentBlocks)) {
+                    for (const block of blogData.contentBlocks) {
+                        const blockId = 'block-' + Date.now() + Math.random();
+                        
+                        if (block.type === 'text') {
+                            const blockHtml = `
+                                <div class="content-block bg-white p-4 rounded-lg border border-gray-200 mb-4" data-type="text" id="${blockId}">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-gray-700">Text Block</span>
+                                        <div class="flex space-x-2">
+                                            <button type="button" class="move-up-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </button>
+                                            <button type="button" class="move-down-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </button>
+                                            <button type="button" class="delete-block-btn text-red-500 hover:text-red-700" data-block="${blockId}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="content-text p-2 border border-gray-200 rounded bg-gray-50 min-h-[100px]" contenteditable="true">${block.content || ''}</div>
+                                </div>
+                            `;
+                            contentBlocksContainer.insertAdjacentHTML('beforeend', blockHtml);
+                        } else if (block.type === 'image') {
+                            const blockHtml = `
+                                <div class="content-block bg-white p-4 rounded-lg border border-gray-200 mb-4" data-type="image" id="${blockId}">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-gray-700">Image Block</span>
+                                        <div class="flex space-x-2">
+                                            <button type="button" class="move-up-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </button>
+                                            <button type="button" class="move-down-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </button>
+                                            <button type="button" class="delete-block-btn text-red-500 hover:text-red-700" data-block="${blockId}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="image-upload-area border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer mb-3 hidden">
+                                        <div class="upload-icon text-gray-400 mb-2">
+                                            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                                        </div>
+                                        <p class="upload-text text-gray-600 mb-1">Click to upload image</p>
+                                        <p class="upload-hint text-xs text-gray-400">Recommended size: 1200x630px</p>
+                                        <input type="file" class="hidden image-file-input" accept="image/*">
+                                    </div>
+                                    <div class="image-preview mb-3">
+                                        <img src="${block.imageUrl || ''}" alt="${block.altText || ''}" class="content-image w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="photo-credit-container">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Photo Credit (optional)</label>
+                                        <input type="text" class="photo-credit-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" value="${block.photoCredit || ''}">
+                                    </div>
+                                </div>
+                            `;
+                            contentBlocksContainer.insertAdjacentHTML('beforeend', blockHtml);
+                            
+                            // Set up image block interactivity
+                            const blockElement = document.getElementById(blockId);
+                            const uploadArea = blockElement.querySelector('.image-upload-area');
+                            const fileInput = blockElement.querySelector('.image-file-input');
+                            const previewContainer = blockElement.querySelector('.image-preview');
+                            const imagePreview = blockElement.querySelector('.content-image');
+                            const photoCreditInput = blockElement.querySelector('.photo-credit-input');
+                            
+                            if (imagePreview.src) {
+                                // Store the image URL for later upload
+                                blockElement.imageUrl = imagePreview.src;
+                                if (!imagePreview.src.startsWith('http')) {
+                                    // It's a data URL, we'll need to upload it later
+                                    blockElement.needsUpload = true;
+                                }
+                            }
+                            
+                            uploadArea.addEventListener('click', () => fileInput.click());
+                            fileInput.addEventListener('change', (e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                    const file = e.target.files[0];
+                                    const reader = new FileReader();
+                                    reader.onload = (event) => {
+                                        imagePreview.src = event.target.result;
+                                        uploadArea.classList.add('hidden');
+                                        previewContainer.classList.remove('hidden');
+                                        blockElement.file = file;
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+                            
+                            imagePreview.addEventListener('click', () => fileInput.click());
+                        }
+                    }
+                }
+                
+                // Hide import container and show success message
+                importJsonContainer.classList.add('hidden');
+                importJsonInput.value = '';
+                showToast('JSON imported successfully! Review and click Create Blog when ready.');
+                
+            } catch (error) {
+                console.error('Import error:', error);
+                alert('Error importing JSON: ' + error.message);
+            }
+        });
         
         // Content block management
         const contentBlocksContainer = document.getElementById('content-blocks-container');
