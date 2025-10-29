@@ -4,7 +4,7 @@
     "title": "Welcome to Sunsets & Indicas",
     "description": "Your trusted source for cannabis culture, news, and community in Las Cruces, New Mexico. Join us as we explore the world of cannabis.",
     "buttonText": "Read More",
-    "redirect": "issues/welcome.html",
+    "redirect": "../issues/welcome.html",
     "date": "January 28, 2025"
   }
 ]
