@@ -6,13 +6,5 @@
     "buttonText": "Read More",
     "redirect": "blogs/welcome.html",
     "date": "January 28, 2025"
-  },
-  {
-    "image": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761778108576_new-logo.png",
-    "title": "Title Goes Here",
-    "description": "Desc goes here",
-    "buttonText": "Read More (keep read more)",
-    "redirect": "blogs/title_goes_here.html",
-    "date": "October 29, 2025"
   }
 ]
