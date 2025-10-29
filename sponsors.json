@@ -19,12 +19,6 @@
     "label": "Legal Consultation",
     "logo": "",
     "enabled": true
-  },
-  {
-    "id": 4,
-    "name": "Blacnova Developement",
-    "label": "Testing Purposes",
-    "logo": "https://www.blacnova.net/img/logo_white.png",
-    "enabled": true
   }
 ]
+
