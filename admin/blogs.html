@@ -2147,6 +2147,11 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                                         </div>
                                         <p class="upload-text text-gray-600 mb-1">Click to upload image</p>
                                         <p class="upload-hint text-xs text-gray-400">Recommended size: 1200x630px</p>
+                                        <div class="mt-3 flex justify-center space-x-2">
+                                            <button type="button" class="use-url-btn px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-medium rounded-md transition">
+                                                <i class="fas fa-link mr-1"></i> Use URL
+                                            </button>
+                                        </div>
                                         <input type="file" class="hidden image-file-input" accept="image/*">
                                     </div>
                                     <div class="image-url-container hidden mb-3 border-2 border-dashed border-gray-300 rounded-lg p-4">
@@ -2186,6 +2191,7 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                             const urlInput = blockElement.querySelector('.content-image-url-input');
                             const loadUrlBtn = blockElement.querySelector('.load-image-url-btn');
                             const cancelUrlBtn = blockElement.querySelector('.cancel-url-btn');
+                            const useUrlBtn = blockElement.querySelector('.use-url-btn');
                             const previewContainer = blockElement.querySelector('.image-preview');
                             const imagePreview = blockElement.querySelector('.content-image');
                             const replaceBtn = blockElement.querySelector('.replace-image-block-btn');
@@ -2203,15 +2209,21 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                                 }
                             }
                             
-                            // Upload mode (click to upload)
-                            uploadArea.addEventListener('click', () => fileInput.click());
+                            // Use URL button
+                            if (useUrlBtn) {
+                                useUrlBtn.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    uploadArea.classList.add('hidden');
+                                    urlContainer.classList.remove('hidden');
+                                    urlInput.focus();
+                                });
+                            }
                             
-                            // URL mode (right-click to use URL)
-                            uploadArea.addEventListener('contextmenu', (e) => {
-                                e.preventDefault();
-                                uploadArea.classList.add('hidden');
-                                urlContainer.classList.remove('hidden');
-                                urlInput.focus();
+                            // Upload mode (click to upload)
+                            uploadArea.addEventListener('click', (e) => {
+                                if (!e.target.closest('.use-url-btn')) {
+                                    fileInput.click();
+                                }
                             });
                             
                             fileInput.addEventListener('change', (e) => {
@@ -2340,6 +2352,11 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                         </div>
                         <p class="upload-text text-gray-600 mb-1">Click to upload image</p>
                         <p class="upload-hint text-xs text-gray-400">Recommended size: 1200x630px</p>
+                        <div class="mt-3 flex justify-center space-x-2">
+                            <button type="button" class="use-url-btn px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-medium rounded-md transition">
+                                <i class="fas fa-link mr-1"></i> Use URL
+                            </button>
+                        </div>
                         <input type="file" class="hidden image-file-input" accept="image/*">
                     </div>
                     <div class="image-url-container hidden mb-3 border-2 border-dashed border-gray-300 rounded-lg p-4">
@@ -2380,23 +2397,26 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
             const urlInput = blockElement.querySelector('.content-image-url-input');
             const loadUrlBtn = blockElement.querySelector('.load-image-url-btn');
             const cancelUrlBtn = blockElement.querySelector('.cancel-url-btn');
+            const useUrlBtn = blockElement.querySelector('.use-url-btn');
             const previewContainer = blockElement.querySelector('.image-preview');
             const imagePreview = blockElement.querySelector('.content-image');
             const replaceBtn = blockElement.querySelector('.replace-image-block-btn');
             const photoCreditContainer = blockElement.querySelector('.photo-credit-container');
             const altTextContainer = blockElement.querySelector('.alt-text-container');
             
-            // Upload mode (click to upload)
-            uploadArea.addEventListener('click', () => {
-                fileInput.click();
-            });
-            
-            // URL mode (right-click to use URL)
-            uploadArea.addEventListener('contextmenu', (e) => {
-                e.preventDefault();
+            // Use URL button
+            useUrlBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 uploadArea.classList.add('hidden');
                 urlContainer.classList.remove('hidden');
                 urlInput.focus();
+            });
+            
+            // Upload mode (click to upload)
+            uploadArea.addEventListener('click', (e) => {
+                if (!e.target.closest('.use-url-btn')) {
+                    fileInput.click();
+                }
             });
             
             fileInput.addEventListener('change', (e) => {
