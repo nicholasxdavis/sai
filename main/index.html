@@ -914,13 +914,24 @@ async function initializeNewsletterForm() {
                         return;
                     }
                     
+                    // Determine grid classes based on number of sponsors
+                    let gridClass = 'grid grid-cols-1 gap-12';
+                    if (activeSponsors.length === 1) {
+                        gridClass = 'flex justify-center';
+                    } else if (activeSponsors.length === 2) {
+                        gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-12 md:max-w-2xl md:mx-auto';
+                    } else {
+                        gridClass = 'grid grid-cols-1 md:grid-cols-3 gap-12';
+                    }
+                    container.className = gridClass;
+                    
                     activeSponsors.forEach(sponsor => {
                         const sponsorCard = `
                             <div class="flex flex-col items-center text-center">
-                                <div class="w-16 h-16 bg-accent/20 rounded-lg flex items-center justify-center mb-4 overflow-hidden">
+                                <div class="w-16 h-16 bg-button/20 rounded-lg flex items-center justify-center mb-4 overflow-hidden">
                                     ${sponsor.logo ? 
                                         `<img src="${sponsor.logo}" alt="${sponsor.name}" class="w-full h-full object-contain p-2">` :
-                                        `<svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        `<svg class="w-8 h-8 text-button" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                         </svg>`
                                     }
