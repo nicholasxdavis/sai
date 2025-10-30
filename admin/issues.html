@@ -1683,9 +1683,10 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                     contentBlocks.push({
                         type: 'image',
                         imageUrl: block.querySelector('.content-image').src,
-                        altText: block.querySelector('.content-image').alt,
+                        altText: block.querySelector('.alt-text-input')?.value || block.querySelector('.content-image').alt || '',
                         photoCredit: block.querySelector('.photo-credit-input')?.value || '',
-                        file: block.file
+                        file: block.file,
+                        isUrl: block.dataset.isUrl === 'true'
                     });
                 }
             });
@@ -1706,12 +1707,27 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                 
                 // 2. Upload any additional images in content blocks
                 for (const block of contentBlocks) {
-                    if (block.type === 'image' && block.imageUrl.startsWith('blob:')) {
-                        // This is a newly uploaded image (not from URL)
-                        const file = block.file;
-                        showToast(`Uploading content image: ${file.name}`);
-                        const uploadedUrl = await uploadImageToGitHub(file);
-                        block.imageUrl = uploadedUrl;
+                    if (block.type === 'image') {
+                        if (block.isUrl === 'true' && block.imageUrl && block.imageUrl.startsWith('http')) {
+                            // Using external URL, no upload needed
+                            continue;
+                        } else if (block.imageUrl && (block.imageUrl.startsWith('blob:') || block.imageUrl.startsWith('data:'))) {
+                            // This is a newly uploaded image (blob URL or data URI)
+                            if (block.file) {
+                                const file = block.file;
+                                showToast(`Uploading content image: ${file.name}`);
+                                const uploadedUrl = await uploadImageToGitHub(file);
+                                block.imageUrl = uploadedUrl;
+                            } else if (block.imageUrl.startsWith('data:')) {
+                                // Convert data URI to blob and upload
+                                const response = await fetch(block.imageUrl);
+                                const blob = await response.blob();
+                                const file = new File([blob], `content-image-${Date.now()}.${block.imageUrl.match(/data:image\/(\w+);/)?.[1] || 'png'}`, { type: blob.type });
+                                showToast('Uploading content image...');
+                                const uploadedUrl = await uploadImageToGitHub(file);
+                                block.imageUrl = uploadedUrl;
+                            }
+                        }
                     }
                 }
                 
@@ -1907,14 +1923,37 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                         </div>
                         <p class="upload-text text-gray-600 mb-1">Click to upload image</p>
                         <p class="upload-hint text-xs text-gray-400">Recommended size: 1200x630px</p>
+                        <div class="mt-3 flex justify-center space-x-2">
+                            <button type="button" class="use-url-btn px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-medium rounded-md transition">
+                                <i class="fas fa-link mr-1"></i> Use URL
+                            </button>
+                        </div>
                         <input type="file" class="hidden image-file-input" accept="image/*">
                     </div>
-                    <div class="image-preview hidden mb-3">
+                    <div class="image-url-container hidden mb-3 border-2 border-dashed border-gray-300 rounded-lg p-4">
+                        <input type="url" class="content-image-url-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm mb-2" placeholder="Enter image URL...">
+                        <div class="flex space-x-2">
+                            <button type="button" class="load-image-url-btn px-3 py-2 bg-primary text-white text-sm font-medium rounded-md">
+                                Load Image
+                            </button>
+                            <button type="button" class="cancel-url-btn px-3 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="image-preview hidden mb-3 relative group">
                         <img src="" class="content-image w-full h-auto rounded-lg">
+                        <button type="button" class="replace-image-block-btn absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs hidden group-hover:block">
+                            <i class="fas fa-exchange-alt mr-1"></i> Replace
+                        </button>
                     </div>
                     <div class="photo-credit-container hidden">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Photo Credit (optional)</label>
                         <input type="text" class="photo-credit-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div class="alt-text-container hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Alt Text (optional)</label>
+                        <input type="text" class="alt-text-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
                     </div>
                 </div>
             `;
@@ -1924,13 +1963,31 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
             // Set up the image upload for this block
             const blockElement = document.getElementById(blockId);
             const uploadArea = blockElement.querySelector('.image-upload-area');
+            const urlContainer = blockElement.querySelector('.image-url-container');
             const fileInput = blockElement.querySelector('.image-file-input');
+            const urlInput = blockElement.querySelector('.content-image-url-input');
+            const loadUrlBtn = blockElement.querySelector('.load-image-url-btn');
+            const cancelUrlBtn = blockElement.querySelector('.cancel-url-btn');
+            const useUrlBtn = blockElement.querySelector('.use-url-btn');
             const previewContainer = blockElement.querySelector('.image-preview');
             const imagePreview = blockElement.querySelector('.content-image');
+            const replaceBtn = blockElement.querySelector('.replace-image-block-btn');
             const photoCreditContainer = blockElement.querySelector('.photo-credit-container');
+            const altTextContainer = blockElement.querySelector('.alt-text-container');
             
-            uploadArea.addEventListener('click', () => {
-                fileInput.click();
+            // Use URL button
+            useUrlBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                uploadArea.classList.add('hidden');
+                urlContainer.classList.remove('hidden');
+                urlInput.focus();
+            });
+            
+            // Upload mode (click to upload)
+            uploadArea.addEventListener('click', (e) => {
+                if (!e.target.closest('.use-url-btn')) {
+                    fileInput.click();
+                }
             });
             
             fileInput.addEventListener('change', (e) => {
@@ -1943,15 +2000,61 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                         imagePreview.alt = file.name;
                         
                         uploadArea.classList.add('hidden');
+                        urlContainer.classList.add('hidden');
                         previewContainer.classList.remove('hidden');
                         photoCreditContainer.classList.remove('hidden');
+                        altTextContainer.classList.remove('hidden');
                         
                         // Store the file reference on the block
                         blockElement.file = file;
+                        blockElement.dataset.imageUrl = '';
+                        blockElement.dataset.isUrl = 'false';
                     };
                     
                     reader.readAsDataURL(file);
                 }
+            });
+            
+            // Load image from URL
+            loadUrlBtn.addEventListener('click', () => {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    alert('Please enter an image URL');
+                    return;
+                }
+                
+                imagePreview.src = url;
+                imagePreview.alt = 'Imported image';
+                
+                uploadArea.classList.add('hidden');
+                urlContainer.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+                photoCreditContainer.classList.remove('hidden');
+                altTextContainer.classList.remove('hidden');
+                
+                blockElement.file = null;
+                blockElement.dataset.imageUrl = url;
+                blockElement.dataset.isUrl = 'true';
+            });
+            
+            // Cancel URL input
+            cancelUrlBtn.addEventListener('click', () => {
+                urlContainer.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+                urlInput.value = '';
+            });
+            
+            // Replace image button
+            replaceBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                previewContainer.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+                urlContainer.classList.add('hidden');
+                fileInput.value = '';
+                urlInput.value = '';
+                blockElement.file = null;
+                blockElement.dataset.imageUrl = '';
+                blockElement.dataset.isUrl = '';
             });
             
             // Scroll to the new block
