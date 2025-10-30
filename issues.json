@@ -6,5 +6,13 @@
     "buttonText": "Read More",
     "redirect": "../issues/welcome.html",
     "date": "January 28, 2025"
+  },
+  {
+    "image": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761786511389_social.png",
+    "title": "Welcome to Sunsets & Indicas",
+    "description": "Your trusted source for cannabis culture, news, and community in Las Cruces, New Mexico. Explore dispensaries, strains, lifestyle, and local events with us.",
+    "buttonText": "Read More",
+    "redirect": "issues/welcome_to_sunsets_&_indicas.html",
+    "date": "October 29, 2025"
   }
 ]
