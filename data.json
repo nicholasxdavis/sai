@@ -1,77 +1,10 @@
 [
   {
-    "image": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761780321013_new-logo.png",
-    "title": "Exploring Las Cruces' Cannabis Scene: Our Top Picks at Sunsets and Indicas",
-    "description": "A look into Las Cruces’ growing cannabis community — our top dispensary picks, what stands out about each, and what we’re loving right now.",
+    "image": "https://www.blacnova.net/ui/img/hero.png",
+    "title": "Welcome to Sunsets & Indicas",
+    "description": "Your trusted source for cannabis culture, news, and community in Las Cruces, New Mexico. Join us as we explore the world of cannabis.",
     "buttonText": "Read More",
-    "redirect": "../blogs/exploring_las_cruces'_cannabis_scene:_our_top_picks_at_sunsets_and_indicas.html",
-    "date": "October 29, 2025",
-    "photoCredit": "",
-    "contentBlocks": [
-      {
-        "type": "text",
-        "content": "Las Cruces, New Mexico, the desert city with a calm vibe, mountain views, and now, a solid cannabis scene lol. Over the last few years, the industry has expanded fast, and with more dispensaries opening up across town, locals have plenty of choices. At Sunsets and Indicas, we’ve checked out most of them, and these are our current favorites"
-      },
-      {
-        "type": "image",
-        "imageUrl": "https://images.unsplash.com/photo-1746481722096-77aa88762786?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170",
-        "altText": "Las Cruces sunset over the Organ Mountains",
-        "photoCredit": "",
-        "file": null,
-        "isUrl": true
-      },
-      {
-        "type": "text",
-        "content": "Our Pick #1: Everest Cannabis Co. — Las Cruces North. Address: 4165 White Sage Arc Suite D, Las Cruces, NM 88012. With nearly 4,900 Google reviews, Everest has earned its reputation for clean design, friendly staff, and consistent product quality. Their flower menu stays fresh, and their in-house strains rarely disappoint. We especially recommend their Miracle Alien Cookies — smooth, potent, and perfect for a mellow evening when the desert air cools down."
-      },
-      {
-        "type": "image",
-        "imageUrl": "https://everestnm.com/wp-content/uploads/2023/07/Everest-Cannabis-Co-Logo-BLK.png",
-        "altText": "Everest Cannabis Co storefront Las Cruces",
-        "photoCredit": "",
-        "file": null,
-        "isUrl": true
-      },
-      {
-        "type": "text",
-        "content": "Pick #2: Pecos Valley Production — Locust Street. Address: 2460 S Locust St, Suite 1, Las Cruces, NM 88001. This spot is known for consistency and solid local roots. Their Dairty to Dank lineup always hits right — we’re big fans of the Apple Tartz and Gello strains. They’ve built a reputation for honest pricing and a staff that actually knows what they’re talking about. Whether you’re a casual smoker or seasoned pro, Pecos Valley keeps it professional but laid-back — true to the New Mexico style."
-      },
-      {
-        "type": "image",
-        "imageUrl": "https://pecosvalleyproduction.com/wp-content/uploads/2022/05/pecos-valley-production-logo-992px.png",
-        "altText": "Pecos Valley Production Las Cruces interior",
-        "photoCredit": "",
-        "file": null,
-        "isUrl": true
-      },
-      {
-        "type": "text",
-        "content": "Pick #3: Dispensary Near Me — Las Cruces. Address: 1025 El Paseo Rd, Las Cruces, NM 88001. Phone: 575-652-4818. This one doesn’t have the big-brand flash, but they make up for it with prices and reliability. Our personal favorite from here is Pink Runts — easily one of the best-priced, high-quality smokes in Cruces right now. It’s smooth, sweet, and hits just right without breaking the bank. Whether you’re local or passing through, it’s worth checking out their menu; they usually have solid deals running weekly."
-      },
-      {
-        "type": "image",
-        "imageUrl": "https://static.wixstatic.com/media/62e6cb_0b76ffa597984dfda6cf4dbdff610485~mv2.png/v1/crop/x_0,y_22,w_1084,h_387/fill/w_207,h_74,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Blank%202000%20x%20500_edited.png",
-        "altText": "Dispensary Near Me Las Cruces exterior",
-        "photoCredit": "",
-        "file": null,
-        "isUrl": true
-      },
-      {
-        "type": "text",
-        "content": "Runner-Up: Cannaverse — 2305 Nevada Ave, Las Cruces, NM 88001. Cannaverse is a locally owned, veteran-run dispensary that’s been growing quietly but steadily. They bring a community-driven energy that’s refreshing, and their atmosphere feels personal compared to some of the larger chains. While they’re still finding their rhythm in terms of consistency, the potential is there — definitely one to watch as the local market matures."
-      },
-      {
-        "type": "image",
-        "imageUrl": "https://lh3.googleusercontent.com/p/AF1QipP2FAFeEKNSUPH0SQ6IHKLcqvoHnyROpkhf29V2=s680-w680-h510-rw",
-        "altText": "Cannaverse Las Cruces interior",
-        "photoCredit": "",
-        "file": null,
-        "isUrl": true
-      },
-      {
-        "type": "text",
-        "content": "Final Thoughts: The cannabis scene in Las Cruces is on the rise, and what’s cool about it is that it still feels local, real people, real service, and a community vibe that bigger cities have lost. Whether you’re after budget-friendly buds, top-shelf exotic strains, or something right in the middle, Cruces has you covered. From Everest’s high-end presentation to Pecos Valley’s consistency and Dispensary Near Me’s everyday deals, it’s all part of the city’s growing culture. Stay tuned , we’ll keep sharing our picks as new shops open and local growers drop fresh strains worth talking about."
-      }
-    ]
+    "redirect": "../blogs/welcome.html",
+    "date": "January 28, 2025"
   }
 ]
