@@ -395,6 +395,30 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
+        
+        <!-- Import JSON Section -->
+        <div class="mb-4 flex space-x-2">
+            <button type="button" id="import-json-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition">
+                <i class="fas fa-file-import mr-2"></i> Import JSON
+            </button>
+            <button type="button" id="download-template-btn" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-md transition">
+                <i class="fas fa-download mr-2"></i> Download Template
+            </button>
+        </div>
+        
+        <div id="import-json-container" class="hidden mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Paste JSON Data:</label>
+            <textarea id="import-json-input" rows="10" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary font-mono text-xs" placeholder="Paste your JSON data here..."></textarea>
+            <div class="flex justify-end space-x-2 mt-2">
+                <button type="button" id="cancel-import-btn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-md">
+                    Cancel
+                </button>
+                <button type="button" id="import-json-submit-btn" class="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-medium rounded-md">
+                    Import
+                </button>
+            </div>
+        </div>
+        
         <form id="create-blog-form" class="space-y-4">
             <!-- Image Upload Section -->
             <div>
@@ -1863,6 +1887,336 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                 fileInput.dispatchEvent(event);
             }
         }
+        
+        // Import/Export functionality
+        const importJsonBtn = document.getElementById('import-json-btn');
+        const importJsonContainer = document.getElementById('import-json-container');
+        const importJsonInput = document.getElementById('import-json-input');
+        const importJsonSubmitBtn = document.getElementById('import-json-submit-btn');
+        const cancelImportBtn = document.getElementById('cancel-import-btn');
+        const downloadTemplateBtn = document.getElementById('download-template-btn');
+        
+        // Toggle import JSON input
+        importJsonBtn.addEventListener('click', () => {
+            importJsonContainer.classList.toggle('hidden');
+            if (!importJsonContainer.classList.contains('hidden')) {
+                importJsonInput.focus();
+            }
+        });
+        
+        cancelImportBtn.addEventListener('click', () => {
+            importJsonContainer.classList.add('hidden');
+            importJsonInput.value = '';
+        });
+        
+        // Download template
+        downloadTemplateBtn.addEventListener('click', () => {
+            const template = {
+                "image": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761780321013_new-logo.png",
+                "title": "Exploring Las Cruces' Cannabis Scene: Our Top Picks at Sunsets and Indicas",
+                "description": "A look into Las Cruces' growing cannabis community — our top dispensary picks, what stands out about each, and what we're loving right now.",
+                "buttonText": "Read More",
+                "redirect": "../issues/las_cruces_cannabis_scene_top_picks.html",
+                "date": "October 29, 2025",
+                "photoCredit": "",
+                "contentBlocks": [
+                    {
+                        "type": "text",
+                        "content": "Las Cruces, New Mexico — the desert city with a calm vibe, mountain views, and now, a solid cannabis scene. Over the last few years, the industry has expanded fast, and with more dispensaries opening up across town, locals have plenty of choices. At Sunsets and Indicas, we've checked out most of them, and these are our current favorites — plus a few strains worth trying if you want the best bang for your buck."
+                    },
+                    {
+                        "type": "image",
+                        "imageUrl": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761780321013_new-logo.png",
+                        "altText": "Las Cruces sunset over the Organ Mountains",
+                        "photoCredit": "",
+                        "file": {}
+                    },
+                    {
+                        "type": "text",
+                        "content": "Our Pick #1: Everest Cannabis Co. — Las Cruces North. Address: 4165 White Sage Arc Suite D, Las Cruces, NM 88012. With nearly 4,900 Google reviews, Everest has earned its reputation for clean design, friendly staff, and consistent product quality. Their flower menu stays fresh, and their in-house strains rarely disappoint. We especially recommend their Miracle Alien Cookies — smooth, potent, and perfect for a mellow evening when the desert air cools down."
+                    },
+                    {
+                        "type": "image",
+                        "imageUrl": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761780321013_new-logo.png",
+                        "altText": "Everest Cannabis Co storefront Las Cruces",
+                        "photoCredit": "",
+                        "file": {}
+                    },
+                    {
+                        "type": "text",
+                        "content": "Pick #2: Pecos Valley Production — Locust Street. Address: 2460 S Locust St, Suite 1, Las Cruces, NM 88001. This spot is known for consistency and solid local roots. Their Dairty to Dank lineup always hits right — we're big fans of the Apple Tartz and Gello strains. They've built a reputation for honest pricing and a staff that actually knows what they're talking about. Whether you're a casual smoker or seasoned pro, Pecos Valley keeps it professional but laid-back — true to the New Mexico style."
+                    },
+                    {
+                        "type": "image",
+                        "imageUrl": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761780321013_new-logo.png",
+                        "altText": "Pecos Valley Production Las Cruces interior",
+                        "photoCredit": "",
+                        "file": {}
+                    },
+                    {
+                        "type": "text",
+                        "content": "Pick #3: Dispensary Near Me — Las Cruces. Address: 1025 El Paseo Rd, Las Cruces, NM 88001. Phone: 575-652-4818. This one doesn't have the big-brand flash, but they make up for it with prices and reliability. Our personal favorite from here is Pink Runts — easily one of the best-priced, high-quality smokes in Cruces right now. It's smooth, sweet, and hits just right without breaking the bank. Whether you're local or passing through, it's worth checking out their menu; they usually have solid deals running weekly."
+                    },
+                    {
+                        "type": "image",
+                        "imageUrl": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761780321013_new-logo.png",
+                        "altText": "Dispensary Near Me Las Cruces exterior",
+                        "photoCredit": "",
+                        "file": {}
+                    },
+                    {
+                        "type": "text",
+                        "content": "Runner-Up: Cannaverse — 2305 Nevada Ave, Las Cruces, NM 88001. Cannaverse is a locally owned, veteran-run dispensary that's been growing quietly but steadily. They bring a community-driven energy that's refreshing, and their atmosphere feels personal compared to some of the larger chains. While they're still finding their rhythm in terms of consistency, the potential is there — definitely one to watch as the local market matures."
+                    },
+                    {
+                        "type": "image",
+                        "imageUrl": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761780321013_new-logo.png",
+                        "altText": "Cannaverse Las Cruces interior",
+                        "photoCredit": "",
+                        "file": {}
+                    },
+                    {
+                        "type": "text",
+                        "content": "Final Thoughts: The cannabis scene in Las Cruces is on the rise, and what's cool about it is that it still feels local — real people, real service, and a community vibe that bigger cities have lost. Whether you're after budget-friendly buds, top-shelf exotic strains, or something right in the middle, Cruces has you covered. From Everest's high-end presentation to Pecos Valley's consistency and Dispensary Near Me's everyday deals, it's all part of the city's growing culture. Stay tuned — we'll keep sharing our picks as new shops open and local growers drop fresh strains worth talking about."
+                    }
+                ]
+            };
+            
+            const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'issue-template.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        
+        // Import JSON
+        importJsonSubmitBtn.addEventListener('click', async () => {
+            try {
+                const jsonText = importJsonInput.value.trim();
+                if (!jsonText) {
+                    alert('Please paste JSON data');
+                    return;
+                }
+                
+                const issueData = JSON.parse(jsonText);
+                
+                // Validate required fields
+                if (!issueData.title || !issueData.description || !issueData.image) {
+                    alert('JSON must contain title, description, and image fields');
+                    return;
+                }
+                
+                // Populate form fields
+                document.getElementById('blog-title').value = issueData.title;
+                document.getElementById('blog-description').value = issueData.description;
+                document.getElementById('blog-button-text').value = issueData.buttonText || 'Read More';
+                
+                // Set featured image
+                const featuredImagePreview = document.getElementById('uploaded-image-preview');
+                const uploadPreview = document.getElementById('upload-preview');
+                const uploadFilename = document.getElementById('upload-filename');
+                
+                // Show featured image preview from URL
+                featuredImagePreview.src = issueData.image;
+                uploadFilename.textContent = 'Imported Image';
+                uploadPreview.classList.remove('hidden');
+                
+                // Store the URL so it can be used during creation
+                uploadPreview.dataset.imageUrl = issueData.image;
+                uploadPreview.dataset.isUrl = 'true';
+                
+                // Load content blocks
+                const contentBlocksContainer = document.getElementById('content-blocks-container');
+                contentBlocksContainer.innerHTML = '';
+                
+                if (issueData.contentBlocks && Array.isArray(issueData.contentBlocks)) {
+                    for (const block of issueData.contentBlocks) {
+                        const blockId = 'block-' + Date.now() + Math.random();
+                        
+                        if (block.type === 'text') {
+                            const blockHtml = `
+                                <div class="content-block bg-white p-4 rounded-lg border border-gray-200 mb-4" data-type="text" id="${blockId}">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-gray-700">Text Block</span>
+                                        <div class="flex space-x-2">
+                                            <button type="button" class="move-up-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </button>
+                                            <button type="button" class="move-down-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </button>
+                                            <button type="button" class="delete-block-btn text-red-500 hover:text-red-700" data-block="${blockId}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="content-text p-2 border border-gray-200 rounded bg-gray-50 min-h-[100px]" contenteditable="true">${block.content || ''}</div>
+                                </div>
+                            `;
+                            contentBlocksContainer.insertAdjacentHTML('beforeend', blockHtml);
+                        } else if (block.type === 'image') {
+                            const blockHtml = `
+                                <div class="content-block bg-white p-4 rounded-lg border border-gray-200 mb-4" data-type="image" id="${blockId}">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium text-gray-700">Image Block</span>
+                                        <div class="flex space-x-2">
+                                            <button type="button" class="move-up-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </button>
+                                            <button type="button" class="move-down-btn text-gray-500 hover:text-gray-700" data-block="${blockId}">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </button>
+                                            <button type="button" class="delete-block-btn text-red-500 hover:text-red-700" data-block="${blockId}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="image-upload-area border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer mb-3 hidden">
+                                        <div class="upload-icon text-gray-400 mb-2">
+                                            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                                        </div>
+                                        <p class="upload-text text-gray-600 mb-1">Click to upload image</p>
+                                        <p class="upload-hint text-xs text-gray-400">Recommended size: 1200x630px</p>
+                                        <div class="mt-3 flex justify-center space-x-2">
+                                            <button type="button" class="use-url-btn px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-medium rounded-md transition">
+                                                <i class="fas fa-link mr-1"></i> Use URL
+                                            </button>
+                                        </div>
+                                        <input type="file" class="hidden image-file-input" accept="image/*">
+                                    </div>
+                                    <div class="image-url-container hidden mb-3 border-2 border-dashed border-gray-300 rounded-lg p-4">
+                                        <input type="url" class="content-image-url-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm mb-2" placeholder="Enter image URL...">
+                                        <div class="flex space-x-2">
+                                            <button type="button" class="load-image-url-btn px-3 py-2 bg-primary text-white text-sm font-medium rounded-md">
+                                                Load Image
+                                            </button>
+                                            <button type="button" class="cancel-url-btn px-3 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="image-preview mb-3 relative group">
+                                        <img src="${block.imageUrl || ''}" alt="${block.altText || ''}" class="content-image w-full h-auto rounded-lg">
+                                        <button type="button" class="replace-image-block-btn absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs hidden group-hover:block">
+                                            <i class="fas fa-exchange-alt mr-1"></i> Replace
+                                        </button>
+                                    </div>
+                                    <div class="photo-credit-container">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Photo Credit (optional)</label>
+                                        <input type="text" class="photo-credit-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" value="${block.photoCredit || ''}">
+                                    </div>
+                                    <div class="alt-text-container">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Alt Text (optional)</label>
+                                        <input type="text" class="alt-text-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" value="${block.altText || ''}">
+                                    </div>
+                                </div>
+                            `;
+                            contentBlocksContainer.insertAdjacentHTML('beforeend', blockHtml);
+                            
+                            // Set up image block interactivity
+                            const blockElement = document.getElementById(blockId);
+                            const uploadArea = blockElement.querySelector('.image-upload-area');
+                            const urlContainer = blockElement.querySelector('.image-url-container');
+                            const fileInput = blockElement.querySelector('.image-file-input');
+                            const urlInput = blockElement.querySelector('.content-image-url-input');
+                            const loadUrlBtn = blockElement.querySelector('.load-image-url-btn');
+                            const cancelUrlBtn = blockElement.querySelector('.cancel-url-btn');
+                            const useUrlBtn = blockElement.querySelector('.use-url-btn');
+                            const previewContainer = blockElement.querySelector('.image-preview');
+                            const imagePreview = blockElement.querySelector('.content-image');
+                            const replaceBtn = blockElement.querySelector('.replace-image-block-btn');
+                            const photoCreditInput = blockElement.querySelector('.photo-credit-input');
+                            const altTextInput = blockElement.querySelector('.alt-text-input');
+                            
+                            if (imagePreview.src) {
+                                blockElement.dataset.imageUrl = imagePreview.src;
+                                if (imagePreview.src.startsWith('http')) {
+                                    blockElement.dataset.isUrl = 'true';
+                                } else {
+                                    blockElement.dataset.isUrl = 'false';
+                                }
+                            }
+                            
+                            if (useUrlBtn) {
+                                useUrlBtn.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    uploadArea.classList.add('hidden');
+                                    urlContainer.classList.remove('hidden');
+                                    urlInput.focus();
+                                });
+                            }
+                            
+                            uploadArea.addEventListener('click', (e) => {
+                                if (!e.target.closest('.use-url-btn')) {
+                                    fileInput.click();
+                                }
+                            });
+                            
+                            fileInput.addEventListener('change', (e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                    const file = e.target.files[0];
+                                    const reader = new FileReader();
+                                    reader.onload = (event) => {
+                                        imagePreview.src = event.target.result;
+                                        uploadArea.classList.add('hidden');
+                                        urlContainer.classList.add('hidden');
+                                        previewContainer.classList.remove('hidden');
+                                        blockElement.file = file;
+                                        blockElement.dataset.imageUrl = '';
+                                        blockElement.dataset.isUrl = 'false';
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+                            
+                            loadUrlBtn.addEventListener('click', () => {
+                                const url = urlInput.value.trim();
+                                if (!url) {
+                                    alert('Please enter an image URL');
+                                    return;
+                                }
+                                imagePreview.src = url;
+                                imagePreview.alt = urlInput.value;
+                                urlContainer.classList.add('hidden');
+                                previewContainer.classList.remove('hidden');
+                                blockElement.file = null;
+                                blockElement.dataset.imageUrl = url;
+                                blockElement.dataset.isUrl = 'true';
+                            });
+                            
+                            cancelUrlBtn.addEventListener('click', () => {
+                                urlContainer.classList.add('hidden');
+                                uploadArea.classList.remove('hidden');
+                                urlInput.value = '';
+                            });
+                            
+                            replaceBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                previewContainer.classList.add('hidden');
+                                uploadArea.classList.remove('hidden');
+                                urlContainer.classList.add('hidden');
+                                fileInput.value = '';
+                                urlInput.value = '';
+                                blockElement.file = null;
+                                blockElement.dataset.imageUrl = '';
+                                blockElement.dataset.isUrl = '';
+                            });
+                        }
+                    }
+                }
+                
+                // Hide import container and show success message
+                importJsonContainer.classList.add('hidden');
+                importJsonInput.value = '';
+                showToast('JSON imported successfully! Review and click Create Issue when ready.');
+                
+            } catch (error) {
+                console.error('Import error:', error);
+                alert('Error importing JSON: ' + error.message);
+            }
+        });
         
         // Content block management
         const contentBlocksContainer = document.getElementById('content-blocks-container');
