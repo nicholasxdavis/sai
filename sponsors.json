@@ -1,10 +1,10 @@
 [
   {
     "id": 1,
-    "name": "Las Cruces Cannabis Co.",
-    "label": "Premium Dispensary",
-    "logo": "",
-    "enabled": false
+    "name": "Blacnova Development",
+    "label": "Powered by Blacnova",
+    "logo": "https://www.blacnova.net/img/logo_white.png",
+    "enabled": true
   },
   {
     "id": 2,
