@@ -4,7 +4,7 @@
     "name": "Las Cruces Cannabis Co.",
     "label": "Premium Dispensary",
     "logo": "",
-    "enabled": true
+    "enabled": false
   },
   {
     "id": 2,
@@ -21,4 +21,3 @@
     "enabled": true
   }
 ]
-
