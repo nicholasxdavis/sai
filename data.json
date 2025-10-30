@@ -1,13 +1,5 @@
 [
   {
-    "image": "https://www.blacnova.net/ui/img/hero.png",
-    "title": "Welcome to Sunsets & Indicas",
-    "description": "Your trusted source for cannabis culture, news, and community in Las Cruces, New Mexico. Join us as we explore the world of cannabis.",
-    "buttonText": "Read More",
-    "redirect": "../blogs/welcome.html",
-    "date": "January 28, 2025"
-  },
-  {
     "image": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_1761784236338_hero.png",
     "title": "Exploring Our Cannabis Scene",
     "description": "A look into Las Cruces’ growing cannabis community — our top dispensary picks, what stands out about each, and what we’re loving right now.",
