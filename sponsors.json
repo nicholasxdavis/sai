@@ -11,20 +11,13 @@
     "name": "Sunset Grow Solutions",
     "label": "Cultivation Equipment",
     "logo": "",
-    "enabled": true
+    "enabled": false
   },
   {
     "id": 3,
     "name": "Cannabis Legal Services",
     "label": "Legal Consultation",
     "logo": "",
-    "enabled": true
-  },
-  {
-    "id": 4,
-    "name": "Blacnova Development",
-    "label": "Powered by Blacnova",
-    "logo": "https://www.blacnova.net/img/logo_white.png",
     "enabled": true
   }
 ]
