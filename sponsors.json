@@ -11,13 +11,13 @@
     "name": "Sunset Grow Solutions",
     "label": "Cultivation Equipment",
     "logo": "",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 3,
     "name": "Cannabis Legal Services",
     "label": "Legal Consultation",
     "logo": "",
-    "enabled": true
+    "enabled": false
   }
 ]
