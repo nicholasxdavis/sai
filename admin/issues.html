@@ -1643,12 +1643,18 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
             
             const index = parseInt(document.getElementById('edit-blog-index').value);
             const cards = JSON.parse(localStorage.getItem('currentBlogCards') || '[]');
+            const redirectValue = document.getElementById('edit-redirect').value;
+            // Remove main/ prefix if present
+            const redirect = redirectValue.startsWith('main/') ? redirectValue.substring(5) : redirectValue;
+            
             const newCard = {
                 image: document.getElementById('edit-image-url').value,
                 title: document.getElementById('edit-title').value,
                 description: document.getElementById('edit-description').value,
                 buttonText: document.getElementById('edit-button-text').value,
-                redirect: document.getElementById('edit-redirect').value
+                redirect: redirect,
+                photoCredit: cards[index]?.photoCredit || '',
+                contentBlocks: cards[index]?.contentBlocks || []
             };
             
             if (index === -1) {
@@ -1766,8 +1772,10 @@ async function createBlogHTMLFile(title, contentBlocks, featuredImageUrl) {
                     title: title,
                     description: description,
                     buttonText: buttonText,
-                    redirect: `${CONFIG.BLOGS_DIR}/${fileName}`,
-                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                    redirect: `../issues/${fileName}`,
+                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    photoCredit: '',
+                    contentBlocks: contentBlocks
                 };
                 
                 cards.push(newCard);
