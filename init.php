@@ -83,8 +83,6 @@ function ensureTables(PDO $pdo): void {
 }
 
 ensureTables($pdo);
-
-// Seed default admin user (nic@blacnova.net / 2900) if it doesn't exist
 $seedEmail = 'nic@blacnova.net';
 $exists = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
 $exists->execute([':email' => $seedEmail]);
