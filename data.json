@@ -144,5 +144,91 @@
         "isUrl": true
       }
     ]
+  },
+  {
+    "image": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/blog_winter_strains.png",
+    "title": "Best Cannabis Strains for Winter",
+    "description": "Warm up the cold season with our top cannabis picks — strains that hit perfectly for cozy nights, mellow days, and creative downtime.",
+    "buttonText": "Read More",
+    "redirect": "../blogs/best_cannabis_strains_for_winter.html",
+    "date": "November 3, 2025",
+    "photoCredit": "Northern Lights Cannabis Strain",
+    "contentBlocks": [
+      {
+        "type": "text",
+        "content": "Winter slows life down, and that’s not a bad thing. It’s the season for relaxation, introspection, and comfort — and the right strain can make those moments even better. Whether you’re snowed in, wrapped in a blanket, or watching the sun dip behind the mountains, these are the best strains to carry you through the cold months."
+      },
+      {
+        "type": "image",
+        "imageUrl": "https://images.squarespace-cdn.com/content/v1/650b04619b2a54218d493ff0/1729029555552-T6XISLO81XJV9F3OUGXA/Northern+Lights+5+Strain.jpg",
+        "altText": "Northern Lights cannabis strain close-up",
+        "photoCredit": "Northern Lights Cannabis Strain",
+        "file": null,
+        "isUrl": true
+      },
+      {
+        "type": "text",
+        "content": "1️⃣ **Northern Lights** — The winter classic. A pure indica with pine-heavy, earthy flavor that fits the season perfectly. It delivers deep body relaxation, stress relief, and a calm mental fade that pairs well with quiet nights indoors. If winter had a signature strain, this would be it."
+      },
+      {
+        "type": "image",
+        "imageUrl": "https://cdn.shopify.com/s/files/1/2426/0015/files/GMO-cookies-strain-cannabis-flower-nug.jpg?v=1677307149",
+        "altText": "GMO Cookies cannabis strain macro shot",
+        "photoCredit": "GMO Cookies Cannabis Strain",
+        "file": null,
+        "isUrl": true
+      },
+      {
+        "type": "text",
+        "content": "2️⃣ **GMO Cookies (Garlic Cookies)** — Don’t be thrown off by the name. This heavy-hitting hybrid mixes a funky, savory aroma with a long-lasting high that glues you to the couch in the best way possible. Ideal for movie nights or when you just want to stay warm and let the stress melt away."
+      },
+      {
+        "type": "image",
+        "imageUrl": "https://raw.githubusercontent.com/nicholasxdavis/sai/main/assets/white_truffle_strain.jpg",
+        "altText": "White Truffle cannabis strain on black background",
+        "photoCredit": "",
+        "isUrl": true
+      },
+      {
+        "type": "text",
+        "content": "3️⃣ **White Truffle** — Sleek, smooth, and balanced. White Truffle hits you first with a light cerebral lift before easing into a full-body calm. It’s great for creative sessions, reflective thinking, or just decompressing without losing focus. A go-to strain for those chilly evenings when you want to feel clear but cozy."
+      },
+      {
+        "type": "image",
+        "imageUrl": "https://secretnature.com/cdn/shop/products/white-truffle-thca-529048_600x600_crop_center.jpg?v=1692332789",
+        "altText": "Apple Fritter cannabis strain with sugary trichomes",
+        "photoCredit": "Apple Fritter Cannabis Strain",
+        "file": null,
+        "isUrl": true
+      },
+      {
+        "type": "text",
+        "content": "4️⃣ **Apple Fritter** — Sweet, uplifting, and surprisingly strong. Apple Fritter brings pastry-like flavor and an energetic high that fights off winter fatigue. Perfect for social hangouts, creative bursts, or daytime sessions where you want to stay active but mellow. Think of it as the strain that keeps the winter blues away."
+      },
+      {
+        "type": "image",
+        "imageUrl": "https://secretnature.com/cdn/shop/products/purple-punch-thca-489116.png?v=1689349789",
+        "altText": "Purple Punch cannabis strain with purple hues",
+        "photoCredit": "",
+        "file": null,
+        "isUrl": true
+      },
+      {
+        "type": "text",
+        "content": "5️⃣ **Purple Punch** — The ultimate comfort strain. Rich grape and berry flavors, heavy indica effects, and pure sedation. It’s perfect for end-of-day relaxation, fighting insomnia, or simply unwinding in peace. This is the one to roll up when it’s freezing outside and you just want warmth, music, and silence."
+      },
+      {
+        "type": "image",
+        "imageUrl": "https://cannabisnow.com/wp-content/uploads/2014/12/santa-bong.jpg",
+        "altText": "Santa ",
+        "photoCredit": "Santa lol",
+        "file": null,
+        "isUrl": true
+      },
+      {
+        "type": "text",
+        "content": "**Final Thoughts:** Winter is for slowing down and lighting up with intention. These strains don’t just get you high — they fit the mood. From Northern Lights’ classic chill to Purple Punch’s knockout calm, each one has a purpose this season. Keep your stash full, your blanket close, and your lighter ready — because good smoke hits best when it’s cold outside."
+      }
+    ]
   }
 ]
